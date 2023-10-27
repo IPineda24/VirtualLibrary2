@@ -1,36 +1,59 @@
-// Datos de ejemplo (puedes reemplazarlos con tus propios datos)
-const books = [
-    { title: "Book 1", author: "Author 1" },
-    { title: "Book 2", author: "Author 2" },
-    { title: "Book 3", author: "Author 3" },
-    // Agrega más libros aquí
-];
+class Books {
+    constructor({
+        title,
+        author,
+    }) {
+        this.title = title;
+        this.author = author;
+    }
+}
 
-const searchInput = document.getElementById("searchInput");
-const searchButton = document.getElementById("searchButton");
-const bookList = document.getElementById("bookList");
+let listOfBook = JSON.parse(localStorage.getItem('listbook')) || [];
 
-// Función para mostrar resultados de búsqueda
-function displaySearchResults(results) {
-    // Limpiar la lista de libros
-    bookList.innerHTML = "";
 
-    // Mostrar los resultados
-    results.forEach(book => {
-        const li = document.createElement("li");
-        li.textContent = `${book.title} by ${book.author}`;
-        bookList.appendChild(li);
+
+
+function getData() {
+    let getTitle = document.getElementById("title").value;
+    let getAuthor = document.getElementById("author").value;
+    
+    const book = new Books({
+        title: getTitle,
+        author: getAuthor,
+    });
+    listOfBook.push(book);
+
+    localStorage.setItem("listbook", JSON.stringify(listOfBook) );
+
+    showBooks() 
+
+
+}
+
+showBooks() 
+
+
+function showBooks() {
+    let listas2 = document.getElementById("list");
+    
+    // Borra el contenido anterior de la lista
+    while (listas2.firstChild) {
+        listas2.removeChild(listas2.firstChild);
+    }
+    
+    // Añade los nuevos elementos de la lista
+    listOfBook.forEach(theBook => {
+        var celda = document.createElement('p');
+        celda.appendChild(document.createTextNode(theBook.title));
+        listas2.appendChild(celda);
     });
 }
 
-// Función para realizar la búsqueda
-function searchBooks() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const results = books.filter(book =>
-        book.title.toLowerCase().includes(searchTerm) || book.author.toLowerCase().includes(searchTerm)
-    );
-    displaySearchResults(results);
-}
 
-// Manejar el evento de clic en el botón de búsqueda
-searchButton.addEventListener("click", searchBooks);
+
+
+
+
+
+
+
